@@ -818,7 +818,7 @@ class RNFetchBlobFS {
         StatFs statFs = new StatFs(path);
         long blockSize;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            blockSize = statFs.getBlockSizeLong()
+            blockSize = statFs.getBlockSizeLong();
         } else {
             blockSize = statFs.getBlockSize();
         }
