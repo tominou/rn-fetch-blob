@@ -260,6 +260,11 @@ public class RNFetchBlob extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void du(String path, Callback callback) {
+        RNFetchBlobFS.du(path, callback);
+    }
+
+    @ReactMethod
     public void scanFile(final ReadableArray pairs, final Callback callback) {
         final ReactApplicationContext ctx = this.getReactApplicationContext();
         threadPool.execute(new Runnable() {

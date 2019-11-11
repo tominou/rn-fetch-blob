@@ -807,11 +807,12 @@ class RNFetchBlobFS {
 
     static void du(String path, Callback callback) {
         try {
-          long size = getDirectorySize(path);
-          callback.invoke(null, size);
-      } catch(Exception err) {
-          callback.invoke(err.getLocalizedMessage());
-      }
+            WritableMap args = Arguments.createMap();
+            args.putString("size", String.valueOf(getDirectorySize(path)));
+            callback.invoke(null, args);
+        } catch(Exception err) {
+            callback.invoke(err.getLocalizedMessage());
+        }
     }
 
     public static long getDirectorySize(String path) {
