@@ -805,6 +805,27 @@ class RNFetchBlobFS {
         }
     }
 
+    static void du(String path, Callback callback) {
+        try {
+          long size = getDirectorySize(path)
+          callback.invoke(null, size);
+      } catch(Exception err) {
+          callback.invoke(err.getLocalizedMessage());
+      }
+    }
+
+    public static long getDirectorySize(File directory) {
+        StatFs statFs = new StatFs(directory.getAbsolutePath());
+        long blockSize;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            blockSize = statFs.getBlockSizeLong()
+        } else {
+            blockSize = statFs.getBlockSize();
+        }
+
+        return getDirectorySize(directory, blockSize);
+    }
+
     /**
      * Basic stat method
      * @param path  Path
