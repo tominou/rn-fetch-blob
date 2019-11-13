@@ -805,28 +805,6 @@ class RNFetchBlobFS {
         }
     }
 
-    static void du(String path, Callback callback) {
-        try {
-            WritableMap args = Arguments.createMap();
-            args.putString("size", String.valueOf(getDirectorySize(path)));
-            callback.invoke(null, args);
-        } catch(Exception err) {
-            callback.invoke(err.getLocalizedMessage());
-        }
-    }
-
-    public static long getDirectorySize(String path) {
-        StatFs statFs = new StatFs(path);
-        long blockSize;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            blockSize = statFs.getBlockSizeLong();
-        } else {
-            blockSize = statFs.getBlockSize();
-        }
-
-        return blockSize;
-    }
-
     /**
      * Basic stat method
      * @param path  Path
@@ -1001,6 +979,32 @@ class RNFetchBlobFS {
         } catch(Exception err) {
             promise.reject("EUNSPECIFIED", err.getLocalizedMessage());
         }
+    }
+
+    static void du(String path, Callback callback) {
+        /*StatFs stat = new StatFs(path);
+        WritableMap args = Arguments.createMap();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            args.putString("size", String.valueOf(stat.getBlockSizeLong()));
+        } else {
+            args.putString("size", String.valueOf(stat.getBlockSize()));
+        }*/
+        File dir = new File(path);
+        WritableMap args = Arguments.createMap();
+        args.putString("size", String.valueOf(getFolderSize(dir)));
+        callback.invoke(null ,args);
+    }
+
+    public static long getFolderSize(File f) {
+        long size = 0;
+        if (f.isDirectory()) {
+            for (File file : f.listFiles()) {
+                size += getFolderSize(file);
+            }
+        } else {
+            size=f.length();
+        }
+        return size;
     }
 
     static void df(Callback callback) {

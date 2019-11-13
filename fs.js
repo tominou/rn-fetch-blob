@@ -402,6 +402,17 @@ function df(): Promise<{ free: number, total: number }> {
   })
 }
 
+function du(path: string): Promise<{ size: number }> {
+  return new Promise((resolve, reject) => {
+    RNFetchBlob.du(path, (err, stat) => {
+      if (err)
+        reject(addCode('EUNSPECIFIED', new Error(err)))
+      else
+        resolve(stat)
+    })
+  })
+}
+
 export default {
   RNFetchBlobSession,
   unlink,
@@ -427,5 +438,6 @@ export default {
   dirs,
   slice,
   asset,
-  df
+  df,
+  du
 }
