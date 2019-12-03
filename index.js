@@ -328,7 +328,7 @@ function fetch(...args:any):Promise {
   // and `count`, otherwise use the given on.
   // TODO : code refactor, move `uploadProgress` and `progress` to StatefulPromise
   promise.progress = (...args) => {
-    let interval = 20
+    let interval = 250
     let count = -1
     let fn = () => {}
     if(args.length === 2) {
@@ -344,7 +344,7 @@ function fetch(...args:any):Promise {
     return promise
   }
   promise.uploadProgress = (...args) => {
-    let interval = 20
+    let interval = 250
     let count = -1
     let fn = () => {}
     if(args.length === 2) {
